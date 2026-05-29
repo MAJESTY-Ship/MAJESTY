@@ -1,0 +1,2 @@
+# MAJESTY
+Laporan jaringan 
