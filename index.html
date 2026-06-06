@@ -22,6 +22,13 @@
   </form>
   <p id="loginStatus"></p>
 
+  <!-- Info User -->
+  <p id="userInfo"></p>
+
+  <!-- Tombol Logout -->
+  <button id="logoutBtn">Logout</button>
+  <p id="logoutStatus"></p>
+
   <!-- Firebase Config -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
@@ -36,7 +43,7 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // Script Registrasi
+    // Registrasi
     const registerForm = document.getElementById("registerForm");
     const registerStatus = document.getElementById("registerStatus");
     registerForm.addEventListener("submit", (e) => {
@@ -48,7 +55,7 @@
         .catch(error => registerStatus.innerText = "Registrasi gagal: " + error.message);
     });
 
-    // Script Login
+    // Login
     const loginForm = document.getElementById("loginForm");
     const loginStatus = document.getElementById("loginStatus");
     loginForm.addEventListener("submit", (e) => {
@@ -58,6 +65,25 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => loginStatus.innerText = "Login berhasil! Selamat datang.")
         .catch(error => loginStatus.innerText = "Login gagal: " + error.message);
+    });
+
+    // Pantau status login
+    firebase.auth().onAuthStateChanged((user) => {
+      const userInfo = document.getElementById("userInfo");
+      if (user) {
+        userInfo.innerText = "Anda login sebagai: " + user.email;
+      } else {
+        userInfo.innerText = "Belum ada anggota yang login.";
+      }
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutStatus = document.getElementById("logoutStatus");
+    logoutBtn.addEventListener("click", () => {
+      firebase.auth().signOut()
+        .then(() => logoutStatus.innerText = "Anda sudah logout.")
+        .catch(error => logoutStatus.innerText = "Logout gagal: " + error.message);
     });
   </script>
 </body>
