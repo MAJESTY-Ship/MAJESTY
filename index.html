@@ -23,4 +23,42 @@
     };
     firebase.initializeApp(firebaseConfig);
   </script>
-</body>
+</body<body>
+  <h1>Selamat datang di Website Laporan</h1>
+  <p>Silakan login untuk melihat laporan pribadi.</p>
+
+  <!-- Firebase Config -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "API_KEY_ANDA",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</bod<script>
+  // Ambil elemen form
+  const loginForm = document.getElementById("loginForm");
+  const loginStatus = document.getElementById("loginStatus");
+
+  // Event submit form
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    // Proses login Firebase
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        loginStatus.innerText = "Login berhasil! Selamat datang.";
+      })
+      .catch((error) => {
+        loginStatus.innerText = "Login gagal: " + error.message;
+      });
+  });
+</script>y>>
