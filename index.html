@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Website Anggota</title>
@@ -27,6 +28,13 @@
       <button type="submit">Login</button>
     </form>
     <p id="loginStatus"></p>
+  </div>
+
+  <!-- Bagian Laporan Anggota (disembunyikan dulu) -->
+  <div id="laporanAnggota" style="display:none;">
+    <h2>Laporan Anggota</h2>
+    <p>Selamat datang, <span id="userEmail"></span>!</p>
+    <button onclick="logout()">Logout</button>
   </div>
 
   <!-- Script Toggle Password -->
@@ -81,4 +89,30 @@
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
 
-      auth.signInWith
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          document.getElementById("loginStatus").innerText = "Login berhasil!";
+          
+          // Sembunyikan form login & registrasi
+          document.getElementById("authForms").style.display = "none";
+          
+          // Tampilkan laporan anggota
+          document.getElementById("laporanAnggota").style.display = "block";
+          document.getElementById("userEmail").innerText = userCredential.user.email;
+        })
+        .catch((error) => {
+          document.getElementById("loginStatus").innerText = "Error: " + error.message;
+        });
+    });
+
+    // Logout
+    function logout(){
+      auth.signOut().then(() => {
+        // Tampilkan kembali form login & registrasi
+        document.getElementById("authForms").style.display = "block";
+        document.getElementById("laporanAnggota").style.display = "none";
+      });
+    }
+  </script>
+</body>
+</html>
