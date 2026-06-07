@@ -21,103 +21,64 @@
     <!-- Form Login -->
     <h2>Form Login Anggota</h2>
     <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="button" onclick="togglePassword('password')">👁️</button>
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="button" onclick="togglePassword('loginPassword')">👁️</button>
       <button type="submit">Login</button>
     </form>
     <p id="loginStatus"></p>
   </div>
 
-  <!-- Panel User (muncul setelah login) -->
-  <div id="userPanel" style="display:none;">
-    <p id="userInfo"></p>
-    <button id="logoutBtn">Logout</button>
-    <p id="logoutStatus"></p>
-  </div>
-
-  <!-- Halaman Laporan Anggota -->
-  <div id="laporanPanel" style="display:none;">
-    <h2>Laporan Anggota</h2>
-    <p>Ini adalah halaman khusus yang hanya bisa dilihat setelah login.</p>
-    <ul>
-      <li>Laporan 1: Aktivitas komunitas</li>
-      <li>Laporan 2: Data anggota terbaru</li>
-      <li>Laporan 3: Statistik partisipasi</li>
-    </ul>
-  </div>
-
-  <!-- Firebase Config -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <!-- Script Toggle Password -->
   <script>
-    const firebaseConfig = {
-      apiKey: "API_KEY_ASLI",
-      authDomain: "majesty-club.firebaseapp.com",
-      projectId: "majesty-club",
-      storageBucket: "majesty-club.appspot.com",
-      messagingSenderId: "825135157253",
-      appId: "APP_ID_ASLI"
-    };
-    firebase.initializeApp(firebaseConfig);
-
-    // Fungsi Show/Hide Password
     function togglePassword(id) {
       const input = document.getElementById(id);
-      input.type = (input.type === "password") ? "text" : "password";
+      if (input.type === "password") {
+        input.type = "text";
+      } else {
+        input.type = "password";
+      }
     }
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
+  <script>
+    // Konfigurasi Firebase (isi dengan data dari Firebase Console)
+    const firebaseConfig = {
+      apiKey: "API_KEY_KAMU",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+
+    // Inisialisasi Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
     // Registrasi
-    const registerForm = document.getElementById("registerForm");
-    const registerStatus = document.getElementById("registerStatus");
-    registerForm.addEventListener("submit", (e) => {
+    document.getElementById("registerForm").addEventListener("submit", function(e){
       e.preventDefault();
       const email = document.getElementById("regEmail").value;
       const password = document.getElementById("regPassword").value;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => registerStatus.innerText = "Registrasi berhasil! Silakan login.")
-        .catch(error => registerStatus.innerText = "Registrasi gagal: " + error.message);
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          document.getElementById("registerStatus").innerText = "Registrasi berhasil!";
+        })
+        .catch((error) => {
+          document.getElementById("registerStatus").innerText = "Error: " + error.message;
+        });
     });
 
     // Login
-    const loginForm = document.getElementById("loginForm");
-    const loginStatus = document.getElementById("loginStatus");
-    loginForm.addEventListener("submit", (e) => {
+    document.getElementById("loginForm").addEventListener("submit", function(e){
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => loginStatus.innerText = "Login berhasil! Selamat datang.")
-        .catch(error => loginStatus.innerText = "Login gagal: " + error.message);
-    });
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-    // Pantau status login
-    firebase.auth().onAuthStateChanged((user) => {
-      const authForms = document.getElementById("authForms");
-      const userPanel = document.getElementById("userPanel");
-      const laporanPanel = document.getElementById("laporanPanel");
-      const userInfo = document.getElementById("userInfo");
-
-      if (user) {
-        authForms.style.display = "none";   
-        userPanel.style.display = "block";  
-        laporanPanel.style.display = "block"; 
-        userInfo.innerText = "Anda login sebagai: " + user.email;
-      } else {
-        authForms.style.display = "block";  
-        userPanel.style.display = "none";   
-        laporanPanel.style.display = "none"; 
-      }
-    });
-
-    // Logout
-    const logoutBtn = document.getElementById("logoutBtn");
-    const logoutStatus = document.getElementById("logoutStatus");
-    logoutBtn.addEventListener("click", () => {
-      firebase.auth().signOut()
-        .then(() => logoutStatus.innerText = "Anda sudah logout.")
-        .catch(error => logoutStatus.innerText = "Logout gagal: " + error.message);
-    });
-  </script>
-</body>
-</html>
+      auth.signInWith
