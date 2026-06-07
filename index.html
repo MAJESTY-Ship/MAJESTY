@@ -1,144 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Website Anggota</title>
+  <title>MAJESTY AFILIATE PROGRAM</title>
+  <style>
+    body { font-family: Arial; background: linear-gradient(to right, #006400, #FFD700); color: white; text-align: center; }
+    .form-box { background: rgba(0,0,0,0.6); padding: 20px; margin: 20px auto; width: 300px; border-radius: 10px; }
+    input { width: 90%; padding: 10px; margin: 5px; }
+    button { padding: 10px; margin-top: 10px; background: gold; border: none; cursor: pointer; }
+    a { color: white; }
+  </style>
 </head>
 <body>
-  <h1>Selamat datang di Website Laporan</h1>
-  <p>Silakan login atau daftar untuk melihat laporan pribadi.</p>
+  <h1>🌟 MAJESTY AFILIATE PROGRAM 🌟</h1>
+  <p>Silakan daftar atau login untuk masuk ke sistem.</p>
 
-  <!-- Bagian Form Registrasi & Login -->
-  <div id="authForms">
-    <!-- Form Registrasi -->
-    <h2>Form Registrasi Anggota</h2>
+  <div class="form-box">
+    <h2>Registrasi</h2>
     <form id="registerForm">
-      <input type="email" id="regEmail" placeholder="Email" required>
-      <input type="password" id="regPassword" placeholder="Password" required>
-      <button type="button" onclick="togglePassword('regPassword')">👁️</button>
+      <input type="text" placeholder="Nama" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
       <button type="submit">Daftar</button>
     </form>
-    <p id="registerStatus"></p>
+  </div>
 
-    <!-- Form Login -->
-    <h2>Form Login Anggota</h2>
+  <div class="form-box">
+    <h2>Login</h2>
     <form id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <button type="button" onclick="togglePassword('loginPassword')">👁️</button>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
       <button type="submit">Login</button>
     </form>
-    <p id="loginStatus"></p>
   </div>
 
-  <!-- Bagian Laporan Anggota (disembunyikan dulu) -->
-  <div id="laporanAnggota" style="display:none;">
-    <h2>Laporan Anggota</h2>
-    <p>Selamat datang, <span id="userEmail"></span>!</p>
-
-    <!-- Contoh tabel laporan -->
-    <table border="1" cellpadding="8" cellspacing="0">
-      <tr>
-        <th>Nama</th>
-        <th>Wilayah</th>
-        <th>Tanggal Aktivasi</th>
-        <th>No. HP</th>
-        <th>Bank</th>
-        <th>No. KTP</th>
-        <th>Catatan</th>
-      </tr>
-      <tr>
-        <td>AFIAH</td>
-        <td>Jawa Timur</td>
-        <td>01-06-2026</td>
-        <td>08123456789</td>
-        <td>BCA</td>
-        <td>1234567890123456</td>
-        <td>✔️ GAMIKEMAS</td>
-      </tr>
-    </table>
-
-    <button onclick="logout()">Logout</button>
-  </div>
-
-  <!-- Script Toggle Password -->
   <script>
-    function togglePassword(id) {
-      const input = document.getElementById(id);
-      if (input.type === "password") {
-        input.type = "text";
-      } else {
-        input.type = "password";
-      }
-    }
-  </script>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-
-  <script>
-    // Konfigurasi Firebase (isi dengan data dari Firebase Console)
-    const firebaseConfig = {
-      apiKey: "API_KEY_KAMU",
-      authDomain: "PROJECT_ID.firebaseapp.com",
-      projectId: "PROJECT_ID",
-      storageBucket: "PROJECT_ID.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
-    };
-
-    // Inisialisasi Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Registrasi
-    document.getElementById("registerForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const email = document.getElementById("regEmail").value;
-      const password = document.getElementById("regPassword").value;
-
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          document.getElementById("registerStatus").innerText = "Registrasi berhasil!";
-        })
-        .catch((error) => {
-          document.getElementById("registerStatus").innerText = "Error: " + error.message;
-        });
-    });
-
-    // Login
     document.getElementById("loginForm").addEventListener("submit", function(e){
       e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          document.getElementById("loginStatus").innerText = "Login berhasil!";
-        })
-        .catch((error) => {
-          document.getElementById("loginStatus").innerText = "Error: " + error.message;
-        });
+      // Jika login berhasil → redirect ke profil.html
+      window.location.href = "profil.html";
     });
-
-    // Listener status login
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // User sedang login
-        document.getElementById("authForms").style.display = "none";
-        document.getElementById("laporanAnggota").style.display = "block";
-        document.getElementById("userEmail").innerText = user.email;
-      } else {
-        // User logout / belum login
-        document.getElementById("authForms").style.display = "block";
-        document.getElementById("laporanAnggota").style.display = "none";
-      }
-    });
-
-    // Logout
-    function logout(){
-      auth.signOut();
-    }
   </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profil Anggota</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; text-align: center; }
+    table { margin: auto; border-collapse: collapse; width: 70%; }
+    th, td { border: 1px solid #333; padding: 10px; }
+    th { background: #FFD700; }
+    a { display: block; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Profil Anggota</h1>
+  <table>
+    <tr><th>Nama</th><td>AFIAH</td></tr>
+    <tr><th>Alamat</th><td>Jawa Timur</td></tr>
+    <tr><th>No HP</th><td>08123456789</td></tr>
+    <tr><th>Bank</th><td>BCA</td></tr>
+    <tr><th>No Rekening</th><td>1234567890</td></tr>
+    <tr><th>ID Member</th><td>MAJ001</td></tr>
+    <tr><th>Peringkat</th><td>Afiah</td></tr>
+  </table>
+  <a href="peringkat.html">➡️ Lihat Peringkat</a>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Peringkat Pencapaian</title>
+  <style>
+    body { font-family: Arial; background: linear-gradient(to right, #FFD700, #006400); color: white; text-align: center; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 10px; font-size: 20px; }
+    a { color: white; display: block; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Peringkat Pencapaian</h1>
+  <ul>
+    <li>⭐ Standar</li>
+    <li>⭐⭐ Sentosa</li>
+    <li>⭐⭐⭐ Sejahtera</li>
+    <li>⭐⭐⭐⭐ Makmur</li>
+    <li>⭐⭐⭐⭐⭐ Jaya</li>
+    <li>🌟 Afiah</li>
+    <li>🌟🌟 Afiah Jaya</li>
+    <li>🌟🌟🌟 AFIAH SBM</li>
+  </ul>
+  <a href="referral.html">➡️ Laporan Referral</a>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Laporan Referral</title>
+  <style>
+    body { font-family: Arial; background: #e6f7ff; text-align: center; }
+    table { margin: auto; border-collapse: collapse; width: 80%; }
+    th, td { border: 1px solid #333; padding: 10px; }
+    th { background: #006400; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Laporan Referral / Mitra Recommended</h1>
+  <p>Jumlah direkomendasikan: 12</p>
+
+  <h2>Profil Recommended</h2>
+  <table>
+    <tr><th>Nama</th><th>Email</th><th>Peringkat</th></tr>
+    <tr><td>Budi</td><td>budi@example.com</td><td>Standar</td></tr>
+    <tr><td>Siti</td><td>siti@example.com</td><td>Makmur</td></tr>
+  </table>
+
+  <h2>Kontrakan Table Sesuai Peringkat</h2>
+  <table>
+    <tr><th>Peringkat</th><th>Jumlah Table/Bulan</th></tr>
+    <tr><td>Standar</td><td>8</td></tr>
+    <tr><td>Sentosa</td><td>10</td></tr>
+    <tr><td>Sejahtera</td><td>12</td></tr>
+    <tr><td>Makmur</td><td>14</td></tr>
+    <tr><td>Jaya</td><td>16</td></tr>
+    <tr><td>Afiah</td><td>18</td></tr>
+    <tr><td>Afiah Jaya</td><td>20</td></tr>
+    <tr><td>AFIAH SBM</td><td>24</td></tr>
+  </table>
 </body>
 </html>
