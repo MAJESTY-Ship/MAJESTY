@@ -3,19 +3,21 @@
 <head>
   <title>MAJESTY AFILIATE PROGRAM</title>
   <style>
-    body { font-family: Arial; background: linear-gradient(to right, #006400, #FFD700); margin:0; color:#333; }
-    header { background:#333; color:white; padding:15px; text-align:center; font-size:24px; }
+    body { font-family: Arial; margin:0; background:linear-gradient(to right,#006400,#FFD700); }
+    header { background:#333; color:white; padding:15px; text-align:center; font-size:26px; }
     nav { background:#444; display:flex; justify-content:center; }
     nav a { color:white; padding:14px 20px; text-decoration:none; }
     nav a:hover { background:#FFD700; color:#000; }
     section { padding:20px; display:none; }
     .active { display:block; }
-    .form-box { background:rgba(0,0,0,0.05); padding:20px; margin:20px auto; width:300px; border-radius:10px; text-align:center; }
+    .form-box { background:rgba(255,255,255,0.9); padding:20px; margin:20px auto; width:300px; border-radius:10px; text-align:center; }
     input { width:90%; padding:10px; margin:5px; }
     button { padding:10px; margin-top:10px; background:gold; border:none; cursor:pointer; }
     table { margin:auto; border-collapse:collapse; width:80%; }
     th, td { border:1px solid #333; padding:10px; text-align:center; }
     th { background:#FFD700; }
+    .card { max-width:500px; margin:auto; background:white; padding:20px; border-radius:15px; box-shadow:0 0 15px rgba(0,0,0,0.2); text-align:center; }
+    .certificate { background:white; max-width:700px; margin:auto; padding:30px; border:8px double #FFD700; border-radius:20px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body>
@@ -29,7 +31,7 @@
 
   <!-- Halaman Home -->
   <section id="home" class="active">
-    <h2>Silakan daftar atau login untuk masuk ke sistem</h2>
+    <h2 style="text-align:center; color:white;">Silakan daftar atau login untuk masuk ke sistem</h2>
     <div class="form-box">
       <h3>Registrasi</h3>
       <form id="registerForm">
@@ -53,55 +55,66 @@
 
   <!-- Halaman Profil -->
   <section id="profil">
-    <h2>Profil Anggota</h2>
-    <table>
-      <tr><th>Nama</th><td>AFIAH</td></tr>
-      <tr><th>Alamat</th><td>Jawa Timur</td></tr>
-      <tr><th>No HP</th><td>08123456789</td></tr>
-      <tr><th>Bank</th><td>BCA</td></tr>
-      <tr><th>No Rekening</th><td>1234567890</td></tr>
-      <tr><th>ID Member</th><td>MAJ001</td></tr>
-      <tr><th>Peringkat</th><td>Afiah</td></tr>
-    </table>
+    <h2 style="text-align:center; color:#006400;">Profil Anggota</h2>
+    <div class="card">
+      <img src="foto-mitra.jpg" alt="Foto Mitra" style="width:150px; height:150px; border-radius:50%; border:4px solid #FFD700;">
+      <h3>AFIAH</h3>
+      <p>ID Member: MAJ001</p>
+      <table style="width:100%; margin-top:15px;">
+        <tr><th>Alamat</th><td>Jawa Timur</td></tr>
+        <tr><th>No HP</th><td>08123456789</td></tr>
+        <tr><th>Bank</th><td>BCA</td></tr>
+        <tr><th>No Rekening</th><td>1234567890</td></tr>
+        <tr><th>Peringkat</th><td>Afiah</td></tr>
+      </table>
+    </div>
+    <button onclick="logout()">Logout</button>
   </section>
 
   <!-- Halaman Peringkat -->
   <section id="peringkat">
-    <h2>Peringkat Pencapaian</h2>
-    <table>
-      <tr><th>Peringkat</th><th>Bintang</th></tr>
-      <tr><td>Standar</td><td>⭐</td></tr>
-      <tr><td>Sentosa</td><td>⭐⭐</td></tr>
-      <tr><td>Sejahtera</td><td>⭐⭐⭐</td></tr>
-      <tr><td>Makmur</td><td>⭐⭐⭐⭐</td></tr>
-      <tr><td>Jaya</td><td>⭐⭐⭐⭐⭐</td></tr>
-      <tr><td>Afiah</td><td>⭐⭐⭐⭐⭐⭐</td></tr>
-      <tr><td>Afiah Jaya</td><td>⭐⭐⭐⭐⭐⭐⭐</td></tr>
-      <tr><td>AFIAH SBM</td><td>⭐⭐⭐⭐⭐⭐⭐⭐</td></tr>
-    </table>
+    <div class="certificate">
+      <h2 style="color:#006400;">🎉 Selamat Kepada Mitra 🎉</h2>
+      <h1 style="color:#FFD700;">AFIAH</h1>
+      <p style="font-size:18px;">Telah mencapai peringkat <b>Afiah Jaya</b></p>
+      <img src="foto-mitra.jpg" alt="Foto Mitra" style="width:200px; height:200px; border-radius:50%; border:5px solid #006400; margin:20px 0;">
+      <p>ID Member: <b>MAJ001</b></p>
+      <p style="margin-top:20px; font-style:italic; color:#555;">MAJESTY AFILIATE PROGRAM memberikan penghargaan atas pencapaian luar biasa ini.</p>
+    </div>
   </section>
 
   <!-- Halaman Referral -->
   <section id="referral">
-    <h2>Laporan Referral / Mitra Recommended</h2>
-    <p>Jumlah direkomendasikan: 12</p>
+    <h2 style="text-align:center; color:#006400;">Laporan Referral / Mitra Recommended</h2>
+    <p style="text-align:center; font-size:18px;">Jumlah Mitra Direkrut: <b>12</b></p>
+
     <h3>Profil Recommended</h3>
     <table>
-      <tr><th>Nama</th><th>Email</th><th>Peringkat</th></tr>
-      <tr><td>Budi</td><td>budi@example.com</td><td>Standar</td></tr>
-      <tr><td>Siti</td><td>siti@example.com</td><td>Makmur</td></tr>
+      <tr><th>Nama</th><th>Email</th><th>ID Member</th><th>Alamat</th><th>Peringkat</th></tr>
+      <tr><td>Budi</td><td>budi@example.com</td><td>MAJ002</td><td>Surabaya</td><td>Standar</td></tr>
+      <tr><td>Siti</td><td>siti@example.com</td><td>MAJ003</td><td>Malang</td><td>Makmur</td></tr>
     </table>
-    <h3>Kontrakan Table Sesuai Peringkat</h3>
+
+    <h3>Kontrak Table Bulanan</h3>
     <table>
-      <tr><th>Peringkat</th><th>Jumlah Table/Bulan</th></tr>
-      <tr><td>Standar</td><td>8</td></tr>
-      <tr><td>Sentosa</td><td>10</td></tr>
-      <tr><td>Sejahtera</td><td>12</td></tr>
-      <tr><td>Makmur</td><td>14</td></tr>
-      <tr><td>Jaya</td><td>16</td></tr>
-      <tr><td>Afiah</td><td>18</td></tr>
-      <tr><td>Afiah Jaya</td><td>20</td></tr>
-      <tr><td>AFIAH SBM</td><td>24</td></tr>
+      <tr>
+        <th>Bulan 1</th><th>Bulan 2</th><th>Bulan 3</th><th>Bulan 4</th><th>Bulan 5</th><th>Bulan 6</th>
+        <th>Bulan 7</th><th>Bulan 8</th><th>Bulan 9</th><th>Bulan 10</th><th>Bulan 11</th><th>Bulan 12</th>
+      </tr>
+      <tr>
+        <td style="background:green; color:white;">Aktif</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+        <td style="background:red; color:white;">Belum</td>
+      </tr>
     </table>
   </section>
 
@@ -123,6 +136,11 @@
       e.preventDefault();
       showPage("profil");
     });
+
+    // Logout → kembali ke home
+    function logout(){
+      showPage("home");
+    }
   </script>
 </body>
 </html>
