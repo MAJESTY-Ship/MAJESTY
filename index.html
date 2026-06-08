@@ -15,7 +15,10 @@ section { padding:20px; display:none; }
 input { width:90%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:4px; }
 button { padding:10px 20px; margin-top:10px; background:gold; border:none; cursor:pointer; }
 button:hover { background:#e6c200; }
-.notice { background:#fff3cd; padding:15px; border:1px solid #ffeeba; border-radius:8px; margin:10px 0; }
+.notice { background:rgba(255,255,255,0.95); padding:20px; border-radius:10px; margin:20px auto; width:90%; }
+.notice h3 { color:#006400; }
+.rekening { font-weight:bold; color:#b8860b; margin:5px 0; }
+img.banner { display:block; margin:20px auto; max-width:300px; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -44,18 +47,17 @@ button:hover { background:#e6c200; }
 <section id="aktivasi">
   <h2>Aktivasi Membership</h2>
   <div class="notice">
-    <p><b>Terima kasih telah bergabung sebagai member MAJESTY Affiliate Program.</b></p>
-    <p>Untuk melanjutkan ke tahap registrasi, silakan melakukan transfer sebesar <b>Rp 350.000</b> ke rekening atas nama <b>KHAIRUL ANWAR</b> melalui salah satu pilihan berikut:</p>
-    <ul>
-      <li><b>BCA</b> : 2010498271</li>
-      <li><b>BRI</b> : 6520 0101 6952 532</li>
-      <li><b>SEA BANK</b> : 901501675076</li>
-      <li><b>DANA / GOPAY</b> : 081219608909</li>
-    </ul>
-    <p>📌 <b>Pastikan nomor rekening dan nama bank sesuai sebelum melakukan transfer.</b></p>
+    <h3>Terima kasih telah bergabung sebagai member MAJESTY Affiliate Program.</h3>
+    <p>Untuk melanjutkan ke tahap registrasi, silakan melakukan transfer sebesar <b>Rp 350.000</b> ke rekening atas nama <b>KHAIRUL ANWAR</b>:</p>
+    <div class="rekening">BCA : 2010498271</div>
+    <div class="rekening">BRI : 6520 0101 6952 532</div>
+    <div class="rekening">SEA BANK : 901501675076</div>
+    <div class="rekening">DANA / GOPAY : 081219608909</div>
+    <p>📌 Pastikan nomor rekening dan nama bank sesuai sebelum melakukan transfer.</p>
     <p>Setelah itu, kirimkan <b>bukti transfer (screenshot)</b> ke WhatsApp Admin di nomor <b>087770023277</b> untuk proses verifikasi.</p>
     <p>✅ Setelah bukti diterima dan diverifikasi oleh admin, akun Anda akan segera diaktifkan.</p>
     <p><b>Selamat bergabung bersama komunitas MAJESTY Affiliate Program — semoga langkah ini menjadi awal perjalanan sukses Anda.</b></p>
+    <img src="https://i.ibb.co/3rFZkzM/welcome-woman.png" alt="Sambutan hangat" class="banner">
   </div>
 </section>
 
@@ -82,7 +84,6 @@ let statusMember = "inactive"; // default sebelum aktivasi
 
 document.getElementById("loginForm").addEventListener("submit", function(e){
   e.preventDefault();
-  // simulasi login
   if(document.getElementById("username").value && document.getElementById("password").value){
     if(statusMember === "active"){
       bukaHalaman("profil");
