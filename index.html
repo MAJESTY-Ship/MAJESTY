@@ -1,103 +1,99 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>MAJESTY AFFILIATE PROGRAM</title>
-<style>
-body { font-family: Arial, sans-serif; margin:0; background:linear-gradient(to right,#006400,#FFD700); }
-header { background:#333; color:white; padding:15px; text-align:center; font-size:26px; }
-nav { background:#444; display:flex; justify-content:center; }
-nav a { color:white; padding:14px 20px; text-decoration:none; font-weight: bold; }
-nav a:hover { background:#FFD700; color:#000; }
-section { padding:20px; display:none; }
-.active { display:block; }
-.form-box { background:rgba(255,255,255,0.9); padding:20px; margin:20px auto; width:380px; border-radius:8px; }
-input { width:90%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:4px; }
-button { padding:10px 20px; margin-top:10px; background:gold; border:none; cursor:pointer; }
-button:hover { background:#e6c200; }
-.notice { background:rgba(255,255,255,0.95); padding:20px; border-radius:10px; margin:20px auto; width:90%; }
-.notice h3 { color:#006400; }
-.rekening { font-weight:bold; color:#b8860b; margin:5px 0; }
-img.banner { display:block; margin:20px auto; max-width:300px; border-radius:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAJESTY Affiliate Program</title>
+    <!-- 1. MEMANGGIL SKRIP RESMI FIREBASE CORE & DATABASE -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        /* Tampilan halaman web agar rapi */
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
+        .container { max-width: 500px; background: white; padding: 30px; margin: 0 auto; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        .status-box { margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px; display: none; }
+    </style>
 </head>
 <body>
-<header>MAJESTY AFFILIATE PROGRAM</header>
-<nav>
-  <a href="#" onclick="bukaHalaman('home')">Home</a>
-  <a href="#" onclick="bukaHalaman('profil')">Profil</a>
-  <a href="#" onclick="bukaHalaman('peringkat')">Peringkat</a>
-  <a href="#" onclick="bukaHalaman('referral')">Referral</a>
-</nav>
 
-<!-- Halaman Home -->
-<section id="home" class="active">
-  <h2 style="text-align:center; color:white;">Silakan daftar atau login</h2>
-  <div class="form-box">
-    <h3>Login</h3>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-</section>
+<div class="container">
+    <h2>MAJESTY Affiliate Program</h2>
+    <p>Silakan masukkan Username Anda untuk masuk ke sistem.</p>
 
-<!-- Halaman Aktivasi -->
-<section id="aktivasi">
-  <h2>Aktivasi Membership</h2>
-  <div class="notice">
-    <h3>Terima kasih telah bergabung sebagai member MAJESTY Affiliate Program.</h3>
-    <p>Untuk melanjutkan ke tahap registrasi, silakan melakukan transfer sebesar <b>Rp 350.000</b> ke rekening atas nama <b>KHAIRUL ANWAR</b>:</p>
-    <div class="rekening">BCA : 2010498271</div>
-    <div class="rekening">BRI : 6520 0101 6952 532</div>
-    <div class="rekening">SEA BANK : 901501675076</div>
-    <div class="rekening">DANA / GOPAY : 081219608909</div>
-    <p>📌 Pastikan nomor rekening dan nama bank sesuai sebelum melakukan transfer.</p>
-    <p>Setelah itu, kirimkan <b>bukti transfer (screenshot)</b> ke WhatsApp Admin di nomor <b>087770023277</b> untuk proses verifikasi.</p>
-    <p>✅ Setelah bukti diterima dan diverifikasi oleh admin, akun Anda akan segera diaktifkan.</p>
-    <p><b>Selamat bergabung bersama komunitas MAJESTY Affiliate Program — semoga langkah ini menjadi awal perjalanan sukses Anda.</b></p>
-    <img src="https://i.ibb.co/3rFZkzM/welcome-woman.png" alt="Sambutan hangat" class="banner">
-  </div>
-</section>
+    <!-- FORM INPUT USERNAME -->
+    <div class="input-group">
+        <label for="username">Username Anda:</label>
+        <input type="text" id="username" placeholder="Contoh: anwarglobalmaster" required>
+    </div>
+    <button onclick="cekStatusMember()">Masuk / Cek Status Akun</button>
 
-<!-- Halaman Profil -->
-<section id="profil">
-  <h2>Profil Member</h2>
-  <p>Data profil Anda akan muncul di sini setelah aktivasi.</p>
-</section>
-
-<!-- Halaman Peringkat -->
-<section id="peringkat">
-  <h2>Peringkat Member</h2>
-  <p>Daftar peringkat akan tampil setelah aktivasi.</p>
-</section>
-
-<!-- Halaman Referral -->
-<section id="referral">
-  <h2>Referral</h2>
-  <p>Link referral Anda akan aktif setelah akun diaktivasi oleh admin.</p>
-</section>
+    <!-- KOTAK INFORMASI JIKA BELUM DIAKTIFKAN ADMIN -->
+    <div id="boxPending" class="status-box">
+        <h3 style="color: #856404;">Pendaftaran Belum Aktif</h3>
+        <p>Terima kasih telah bergabung sebagai member MAJESTY Affiliate.</p>
+        <p>Untuk melanjutkan ke tahap registrasi, silakan lakukan transfer sebesar Rp 35.000 ke rekening yang tertera.</p>
+        <p>Setelah itu, kirimkan bukti transfer ke WhatsApp Admin agar segera diaktifkan.</p>
+    </div>
+</div>
 
 <script>
-let statusMember = "inactive"; // default sebelum aktivasi
+    // 2. KONFIGURASI FIREBASE ANDA
+    // GANTI TULISAN DI BAWAH INI DENGAN DATA DARI KONSOL FIREBASE ANDA JIKA BERBEDA
+    const firebaseConfig = {
+        databaseURL: "https://firebaseio.com"
+    };
+    
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-document.getElementById("loginForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  if(document.getElementById("username").value && document.getElementById("password").value){
-    if(statusMember === "active"){
-      bukaHalaman("profil");
-    } else {
-      bukaHalaman("aktivasi");
+    // 3. FUNGSI LOGIKA UNTUK MENGECEK STATUS MEMBER
+    function cekStatusMember() {
+        const usernameInput = document.getElementById('username').value.trim();
+        const boxPending = document.getElementById('boxPending');
+
+        if (usernameInput === "") {
+            alert("Silakan ketik username Anda terlebih dahulu!");
+            return;
+        }
+
+        // Membaca data ke Firebase berdasarkan username yang diinput
+        database.ref('members/' + usernameInput).once('value')
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const dataUser = snapshot.val();
+                
+                // JIKA STATUS DI FIREBASE ADALAH "aktif"
+                if (dataUser.status === "aktif") {
+                    alert("Akun Anda telah AKTIF! Selamat datang di MAJESTY.");
+                    boxPending.style.display = "none";
+                    
+                    // Alihkan user ke halaman utama khusus mitra/dashboard Anda
+                    // Ganti "dashboard.html" dengan nama file halaman member Anda yang sebenarnya
+                    window.location.href = "dashboard.html"; 
+                } 
+                // JIKA STATUS DI FIREBASE ADALAH "pending" ATAU BUKAN "aktif"
+                else {
+                    boxPending.style.display = "block";
+                    alert("Akun ditemukan, namun status belum diaktifkan oleh Admin. Silakan cek detail petunjuk transfer di layar.");
+                }
+            } else {
+                // JIKA USERNAME TIDAK DITEMUKAN SAMA SEKALI DI FIREBASE
+                boxPending.style.display = "none";
+                alert("Username '" + usernameInput + "' belum terdaftar. Silakan hubungi admin atau daftar ulang.");
+            }
+        })
+        .catch((error) => {
+            console.error("Terjadi error saat membaca database: ", error);
+            alert("Gagal terhubung ke database. Periksa koneksi internet Anda.");
+        });
     }
-  }
-});
-
-function bukaHalaman(pageId){
-  let sections = document.querySelectorAll("section");
-  sections.forEach(sec => sec.classList.remove("active"));
-  document.getElementById(pageId).classList.add("active");
-}
 </script>
+
 </body>
 </html>
