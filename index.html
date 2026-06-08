@@ -43,7 +43,6 @@
 
 <script>
     // 2. KONFIGURASI FIREBASE ANDA
-    // GANTI TULISAN DI BAWAH INI DENGAN DATA DARI KONSOL FIREBASE ANDA JIKA BERBEDA
     const firebaseConfig = {
         databaseURL: "https://firebaseio.com"
     };
@@ -74,23 +73,22 @@
                     boxPending.style.display = "none";
                     
                     // Alihkan user ke halaman utama khusus mitra/dashboard Anda
-                    // Ganti "dashboard.html" dengan nama file halaman member Anda yang sebenarnya
                     window.location.href = "dashboard.html"; 
                 } 
-                // JIKA STATUS DI FIREBASE ADALAH "pending" ATAU BUKAN "aktif"
+                // JIKA STATUS DI FIREBASE BUKAN "aktif"
                 else {
                     boxPending.style.display = "block";
-                    alert("Akun ditemukan, namun status belum diaktifkan oleh Admin. Silakan cek detail petunjuk transfer di layar.");
+                    alert("Akun ditemukan, namun status belum diaktifkan oleh Admin.");
                 }
             } else {
                 // JIKA USERNAME TIDAK DITEMUKAN SAMA SEKALI DI FIREBASE
                 boxPending.style.display = "none";
-                alert("Username '" + usernameInput + "' belum terdaftar. Silakan hubungi admin atau daftar ulang.");
+                alert("Username '" + usernameInput + "' belum terdaftar. Silakan hubungi admin.");
             }
         })
         .catch((error) => {
-            console.error("Terjadi error saat membaca database: ", error);
-            alert("Gagal terhubung ke database. Periksa koneksi internet Anda.");
+            console.error("Terjadi error: ", error);
+            alert("Gagal terhubung ke database. Periksa aturan keamanan (Rules) Firebase Anda.");
         });
     }
 </script>
