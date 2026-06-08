@@ -41,7 +41,7 @@
 </div>
 
 <script>
-    // 2. KONFIGURASI FIREBASE BERDASARKAN DATABASE ANDA
+    // 2. KONFIGURASI FIREBASE ANDA
     const firebaseConfig = {
         databaseURL: "https://firebaseio.com"
     };
@@ -87,7 +87,7 @@
         })
         .catch((error) => {
             console.error("Terjadi error: ", error);
-            alert("Gagal terhubung ke database. Periksa koneksi internet Anda.");
+            alert("Gagal terhubung ke database. Periksa aturan keamanan (Rules) Firebase Anda.");
         });
     }
 </script>
