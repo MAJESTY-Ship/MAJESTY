@@ -1,29 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>MAJESTY AFILIATE PROGRAM</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; background:linear-gradient(to right,#006400,#FFD700); min-height: 100vh; }
-    header { background:#333; color:white; padding:15px; text-align:center; font-size:26px; font-weight: bold; }
-    nav { background:#444; display:flex; justify-content:center; }
-    nav a { color:white; padding:14px 20px; text-decoration:none; font-weight: bold; }
-    nav a:hover { background:#FFD700; color:#000; }
-    section { padding:20px; display:none; }
-    .active { display:block; }
-    .form-box { background:rgba(255,255,255,0.9); padding:20px; margin:20px auto; width:300px; border-radius:10px; text-align:center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    input { width:90%; padding:10px; margin:5px 0; border: 1px solid #ccc; border-radius: 4px; }
-    button { padding:10px 20px; margin-top:10px; background:gold; border:none; cursor:pointer; font-weight: bold; border-radius: 5px; }
-    button:hover { background:#e6c200; }
-    .notice { background:#fff3cd; padding:15px; border:1px solid #ffeeba; border-radius:8px; margin-top:20px; }
-  </style>
-</head>
-<body>
-  <header>🌟 MAJESTY AFILIATE PROGRAM 🌟</header>
-
-  <!-- Halaman Home -->
-  <section id="home" class="active">
-    <h2 style="text-align:center; color:white;">Silakan daftar atau login</h2>
-    <div class="form-box">
-      <h3>Login</h3>
-      <form id="loginForm">
+<meta charset="UTF-8">
+<title>MAJESTY AFFILIATE PROGRAM</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:linear-gradient(to right,#006400,#FFD700); }
+header { background:#333; color:white; padding:15px; text-align:center; font-size:26px; }
+nav { background:#444; display:flex; justify-content:center; }
+nav a { color:white; padding:14px 20px; text-decoration:none; font-weight: bold; }
+nav a:hover { background:#FFD700; color:#000; }
+section { padding
