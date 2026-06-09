@@ -1,63 +1,73 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Majesty Affiliate</title>
+  <title>Login Member</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
-    .container { max-width:400px; margin:50px auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
-    h2 { text-align:center; color:#333; }
-    input[type="text"], input[type="password"] { width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:4px; }
-    button { width:100%; padding:10px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
-    button:hover { background:#0056b3; }
-    .gold { color:gold; font-weight:bold; }
-    .message { margin-top:15px; text-align:center; color:#555; }
-    .hidden { display:none; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div class="container" id="loginPage">
+  <!-- Halaman Login -->
+  <div id="loginPage">
     <h2>Login Member</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
     <button onclick="login()">Login</button>
-    <div class="message">Gunakan akun yang sudah terdaftar.</div>
   </div>
 
-  <div class="container hidden" id="activationPage">
-    <h2>Aktivasi Akun</h2>
-    <p>Selamat datang di <b>Majesty Affiliate</b> 🎉</p>
-    <p>Untuk mengaktifkan akun, silakan transfer sebesar <b>Rp 350.000</b> ke nomor rekening berikut:</p>
-    <p class="gold">1234 5678 9012 (BCA a.n. Majesty)</p>
-    <p>Kemudian kirim bukti transfer ke WhatsApp Admin: <b>0812-3456-7890</b></p>
-    <p>Setelah admin konfirmasi, akun Anda akan aktif.</p>
-    <div class="message">“Selamat bergabung… semoga langkah ini menjadi awal perjalanan sukses Anda.”</div>
+  <!-- Halaman Aktivasi -->
+  <div id="activationPage" class="hidden">
+    <h2>Akun Anda masih pending, tunggu verifikasi admin.</h2>
   </div>
 
-  <div class="container hidden" id="memberPage">
-    <h2>Dashboard Member</h2>
-    <p>Profil Anda sudah aktif ✅</p>
-    <p>Peringkat: Bronze Member</p>
-    <p>Referral Link: <a href="#">majesty.com/ref/username</a></p>
-    <div class="message">Teruslah berjuang, sukses menanti Anda!</div>
+  <!-- Dashboard Member -->
+  <div id="dashboardPage" class="hidden">
+    <h2>Selamat datang di Dashboard Member!</h2>
+    <p>Anda sudah berhasil login dan akun aktif ✅</p>
   </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
+    // Konfigurasi Firebase (isi sesuai project Anda)
+    const firebaseConfig = {
+      apiKey: "API_KEY_ANDA",
+      authDomain: "majestyaffiliate.firebaseapp.com",
+      databaseURL: "https://majestyaffiliate-3f67e-default-rtdb.firebaseio.com",
+      projectId: "majestyaffiliate",
+      storageBucket: "majestyaffiliate.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Fungsi login
     function login() {
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
-      if(user && pass) {
-        // Simulasi: akun baru harus aktivasi dulu
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('activationPage').classList.remove('hidden');
-      } else {
-        alert("Isi username dan password terlebih dahulu!");
-      }
-    }
-    // Fungsi ini bisa diperluas: setelah admin konfirmasi, tampilkan memberPage
-    function activateAccount() {
-      document.getElementById('activationPage').classList.add('hidden');
-      document.getElementById('memberPage').classList.remove('hidden');
+
+      db.ref('members').once('value').then(snapshot => {
+        let found = false;
+        snapshot.forEach(child => {
+          const member = child.val();
+          if(member.username === user && member.password === pass) {
+            found = true;
+            if(member.active) {
+              document.getElementById('loginPage').classList.add('hidden');
+              document.getElementById('dashboardPage').classList.remove('hidden');
+            } else {
+              document.getElementById('loginPage').classList.add('hidden');
+              document.getElementById('activationPage').classList.remove('hidden');
+            }
+          }
+        });
+        if(!found) alert("Username atau password salah!");
+      });
     }
   </script>
 </body>
