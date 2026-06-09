@@ -2,11 +2,50 @@
 <html>
 <head>
   <title>Panel Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      margin: 20px auto;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+    button {
+      padding: 6px 12px;
+      background: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0b7dda;
+    }
+  </style>
 </head>
 <body>
   <h2>Panel Admin</h2>
-  <p>Daftar member yang menunggu konfirmasi:</p>
-  <table id="memberTable" border="1"></table>
+  <p style="text-align:center;">Daftar member yang menunggu konfirmasi:</p>
+  <table id="memberTable"></table>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -24,7 +63,6 @@
       appId: "APP_ID"
     };
 
-    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -42,8 +80,8 @@
         const member = child.val();
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${member.nama}</td>
-          <td>${member.username}</td>
+          <td>${member.nama || '-'}</td>
+          <td>${member.username || '-'}</td>
           <td>${member.active ? 'Aktif ✅' : 'Pending'}</td>
           <td>${member.active ? '' : `<button onclick="verifyMember('${child.key}')">Verifikasi</button>`}</td>
         `;
