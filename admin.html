@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Majesty Affiliate</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f0f0f0; margin:0; padding:0; }
+    .container { max-width:600px; margin:50px auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align:center; color:#333; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+    th { background:#007bff; color:#fff; }
+    button { padding:6px 12px; background:#28a745; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    button:hover { background:#218838; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Panel Admin</h2>
+    <p>Daftar member yang menunggu konfirmasi:</p>
+    <table id="memberTable">
+      <tr>
+        <th>Nama</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+    // Konfigurasi Firebase (isi sesuai project Anda)
+    const firebaseConfig = {
+      apiKey: "API_KEY_ANDA",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://PROJECT_ID.firebaseio.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+
+    // Inisialisasi Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Ambil data member dari Realtime Database
+    const memberTable = document.getElementById('memberTable');
+    db.ref('members').on('value', snapshot => {
+      memberTable.innerHTML = `
+        <tr>
+          <th>Nama</th>
+          <th>Username</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>`;
+      snapshot.forEach(child => {
+        const member = child.val();
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${member.nama}</td>
+          <td>${member.username}</td>
+          <td id="status-${child.key}">${member.active ? 'Aktif ✅' : 'Pending'}</td>
+          <td>${member.active ? '' : `<button onclick="verifyMember('${child.key}')">Verifikasi</button>`}</td>
+        `;
+        memberTable.appendChild(row);
+      });
+    });
+
+    // Fungsi verifikasi member
+    function verifyMember(memberId) {
+      db.ref('members/' + memberId).update({ active: true });
+      alert("Member berhasil diverifikasi!");
+    }
+  </script>
+</body>
+</html>
