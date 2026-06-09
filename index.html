@@ -4,94 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAJESTY Affiliate Program</title>
-    <!-- 1. MEMANGGIL SKRIP RESMI FIREBASE CORE & DATABASE -->
-    <script src="https://gstatic.com"><
-    <script src="https://gstatic.com"><
+
+    <!-- 1. MEMANGGIL SKRIP RESMI FIREBASE CORE & DATABASE (VERSI 8 COMPAT) -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
 
     <style>
         /* Tampilan halaman web agar rapi */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
-        .container { max-width: 500px; background: white; padding: 30px; margin: 0 auto; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
-        .input-group { margin-bottom: 15px; text-align: left; }
-        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            max-width: 500px; 
+            width: 100%;
+            background: white; 
+            padding: 30px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+            border-radius: 8px;
+            text-align: center;
+        }
+        .input-group { 
+            margin-bottom: 15px; 
+            text-align: left; 
+        }
+        input { 
+            width: 100%; 
+            padding: 10px; 
+            box-sizing: border-box; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
         button:hover { background-color: #0056b3; }
-        .status-box { margin-top: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 4px; display: none; }
+        .error-msg { color: red; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>MAJESTY Affiliate Program</h2>
-    <p>Silakan masukkan Username Anda untuk masuk ke sistem.</p>
-
-    <!-- FORM INPUT USERNAME -->
-    <div class="input-group">
-        <label for="username">Username Anda:</label>
-        <input type="text" id="username" placeholder="Contoh: anwarglobalmaster" required>
+    <div class="container">
+        <h2>MAJESTY Affiliate Program</h2>
+        <p>Silakan masukkan Username Anda untuk masuk ke sistem</p>
+        
+        <div class="input-group">
+            <label for="username">Username Anda:</label>
+            <input type="text" id="username" placeholder="Contoh: anwarglobalmaster" required>
+        </div>
+        
+        <button onclick="cekStatusAkun()">Masuk / Cek Status Akun</button>
+        <p id="pesanError" class="error-msg"></p>
     </div>
-    <button onclick="cekStatusMember()">Masuk / Cek Status Akun</button>
 
-    <!-- KOTAK INFORMASI JIKA BELUM DIAKTIFKAN ADMIN -->
-    <div id="boxPending" class="status-box">
-        <h3 style="color: #856404;">Pendaftaran Belum Aktif</h3>
-        <p>Terima kasih telah bergabung sebagai member MAJESTY Affiliate.</p>
-        <p>Untuk melanjutkan ke tahap registrasi, silakan lakukan transfer sebesar Rp 35.000 ke rekening yang tertera.</p>
-        <p>Setelah itu, kirimkan bukti transfer ke WhatsApp Admin agar segera diaktifkan.</p>
-    </div>
-</div>
+    <script>
+        // 2. KONFIGURASI FIREBASE KELOLAAN ANDA
+        // Ganti dengan data kredensial dari Konsol Firebase Anda!
+        const firebaseConfig = {
+            apiKey: "ISI_API_KEY_ANDA",
+            authDomain: "ISI_AUTH_DOMAIN_ANDA",
+            databaseURL: "ISI_DATABASE_URL_ANDA",
+            projectId: "ISI_PROJECT_ID_ANDA",
+            storageBucket: "ISI_STORAGE_BUCKET_ANDA",
+            messagingSenderId: "ISI_MESSAGING_SENDER_ID_ANDA",
+            appId: "ISI_APP_ID_ANDA"
+        };
+        
+        // Inisialisasi Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-<script>
-    // 2. KONFIGURASI FIREBASE ANDA
-    const firebaseConfig = {
-        databaseURL: "https://firebaseio.com"
-    };
-    
-    // Inisialisasi Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // 3. FUNGSI LOGIKA UNTUK MENGECEK STATUS MEMBER
-    function cekStatusMember() {
-        const usernameInput = document.getElementById('username').value.trim();
-        const boxPending = document.getElementById('boxPending');
-
-        if (usernameInput === "") {
-            alert("Silakan ketik username Anda terlebih dahulu!");
-            return;
-        }
-
-        // Membaca data ke Firebase berdasarkan username yang diinput
-        database.ref('members/' + usernameInput).once('value')
-        .then((snapshot) => {
-            if (snapshot.exists()) {
-                const dataUser = snapshot.val();
-                
-                // JIKA STATUS DI FIREBASE ADALAH "aktif"
-                if (dataUser.status === "aktif") {
-                    alert("Akun Anda telah AKTIF! Selamat datang di MAJESTY.");
-                    boxPending.style.display = "none";
-                    
-                    // Alihkan user ke halaman utama khusus mitra/dashboard Anda
-                    window.location.href = "dashboard.html"; 
-                } 
-                // JIKA STATUS DI FIREBASE BUKAN "aktif"
-                else {
-                    boxPending.style.display = "block";
-                    alert("Akun ditemukan, namun status belum diaktifkan oleh Admin.");
-                }
-            } else {
-                // JIKA USERNAME TIDAK DITEMUKAN SAMA SEKALI DI FIREBASE
-                boxPending.style.display = "none";
-                alert("Username '" + usernameInput + "' belum terdaftar. Silakan hubungi admin.");
+        // 3. FUNGSI UNTUK MENGECEK USERNAME
+        function cekStatusAkun() {
+            const usernameInput = document.getElementById("username").value.trim().toLowerCase();
+            const pesanError = document.getElementById("pesanError");
+            
+            if (usernameInput === "") {
+                pesanError.innerText = "Sila isi kolom username terlebih dahulu.";
+                pesanError.style.display = "block";
+                return;
             }
-        })
-        .catch((error) => {
-            console.error("Terjadi error: ", error);
-            alert("Gagal terhubung ke database. Periksa aturan keamanan (Rules) Firebase Anda.");
-        });
-    }
-</script>
+
+            // Asumsi struktur data di Firebase: /users/username_user
+            database.ref('users/' + usernameInput).once('value')
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const dataUser = snapshot.val();
+                        pesanError.style.display = "none";
+                        alert("Selamat Datang " + usernameInput + "! Status akun: " + (dataUser.status || "Aktif"));
+                        
+                        // Opsional: Alihkan ke halaman dashboard jika berhasil
+                        // window.location.href = "dashboard.html";
+                    } else {
+                        pesanError.innerText = "Username tidak terdaftar di sistem MAJESTY.";
+                        pesanError.style.display = "block";
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    pesanError.innerText = "Terjadi gangguan jaringan. Coba lagi nanti.";
+                    pesanError.style.display = "block";
+                });
+        }
+    </script>
 
 </body>
 </html>
