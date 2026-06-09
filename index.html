@@ -2,9 +2,7 @@
 <html>
 <head>
   <title>Login Member</title>
-  <style>
-    .hidden { display: none; }
-  </style>
+  <style>.hidden { display: none; }</style>
 </head>
 <body>
   <!-- Halaman Login -->
@@ -23,7 +21,7 @@
   <!-- Dashboard Member -->
   <div id="dashboardPage" class="hidden">
     <h2>Selamat datang di Dashboard Member!</h2>
-    <p>Anda sudah berhasil login dan akun aktif ✅</p>
+    <p id="welcomeText"></p>
   </div>
 
   <!-- Firebase SDK -->
@@ -42,11 +40,9 @@
       appId: "APP_ID"
     };
 
-    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Fungsi login
     function login() {
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
@@ -60,6 +56,7 @@
             if(member.active) {
               document.getElementById('loginPage').classList.add('hidden');
               document.getElementById('dashboardPage').classList.remove('hidden');
+              document.getElementById('welcomeText').innerText = "Selamat datang, " + member.nama;
             } else {
               document.getElementById('loginPage').classList.add('hidden');
               document.getElementById('activationPage').classList.remove('hidden');
