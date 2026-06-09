@@ -2,23 +2,63 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>MAJESTY Affiliate Program</title>
+  <title>Halaman Referral</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #283c86, #45a247); /* kombinasi hijau-biru elegan */
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.2);
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      color: #fff;
+    }
+    th {
+      background: rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-  <h1>Login Anggota</h1>
-
-  <!-- Form Login -->
-  <input type="email" id="email" placeholder="Email Anda">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="login()">Masuk</button>
+  <h1>Referral Anda</h1>
+  <div class="container">
+    <p>Berikut daftar anggota yang mendaftar melalui link referral Anda:</p>
+    <table id="referralTable">
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Nama</th>
+          <th>No HP</th>
+          <th>Jenis Rekening</th>
+          <th>Nama Bank/E-Wallet</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-  <script>
-    // Konfigurasi Firebase (ambil dari Firebase Console → Project settings → Web app)
+    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "API_KEY_ANDA",
       authDomain: "PROJECT_ID.firebaseapp.com",
@@ -28,47 +68,41 @@
       messagingSenderId: "SENDER_ID",
       appId: "APP_ID"
     };
-    firebase.initializeApp(firebaseConfig);
 
-    const auth = firebase.auth();
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-    // Fungsi login
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    // Ambil referral user yang sedang login
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const dbRef = ref(db);
+        get(child(dbRef, "members")).then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const tbody = document.querySelector("#referralTable tbody");
+            tbody.innerHTML = "";
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert("Login berhasil!");
-          // Simpan status login ke database (opsional)
-          const user = userCredential.user;
-          db.ref("members/" + user.uid).set({
-            email: user.email,
-            lastLogin: new Date().toISOString()
-          });
-          // Redirect ke halaman member
-          window.location.href = "member.html";
-        })
-        .catch((error) => {
-          alert("Login gagal: " + error.message);
+            Object.keys(data).forEach((uid) => {
+              const member = data[uid];
+              if (member.referrer === user.uid) {
+                const row = `<tr>
+                  <td>${member.username || "-"}</td>
+                  <td>${member.nama || "-"}</td>
+                  <td>${member.nohp || "-"}</td>
+                  <td>${member.jenisRekening || "-"}</td>
+                  <td>${member.namabank || "-"}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+              }
+            });
+          }
         });
-    }
+      } else {
+        alert("Silakan login terlebih dahulu!");
+        window.location.href = "index.html";
+      }
+    });
   </script>
 </body>
 </html>
-{
-  "rules": {
-    ".read": true,
-    ".write": true
-  }
-}
-const firebaseConfig = {
-  apiKey: "AIzaSyXXXXXX...",
-  authDomain: "majesty-program.firebaseapp.com",
-  databaseURL: "https://majesty-program-default-rtdb.firebaseio.com",
-  projectId: "majesty-program",
-  storageBucket: "majesty-program.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef123456"
-};
