@@ -1,107 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Halaman Referral</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #283c86, #45a247); /* kombinasi hijau-biru elegan */
-      color: #fff;
-      text-align: center;
-      padding: 40px;
-    }
-    .container {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: rgba(255,255,255,0.2);
-    }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-      color: #fff;
-    }
-    th {
-      background: rgba(0,0,0,0.3);
-    }
-  </style>
+  <title>Login Member</title>
 </head>
 <body>
-  <h1>Referral Anda</h1>
-  <div class="container">
-    <p>Berikut daftar anggota yang mendaftar melalui link referral Anda:</p>
-    <table id="referralTable">
-      <thead>
-        <tr>
-          <th>User Name</th>
-          <th>Nama</th>
-          <th>No HP</th>
-          <th>Jenis Rekening</th>
-          <th>Nama Bank/E-Wallet</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+  <h2>Form Login</h2>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Masuk</button>
+  </form>
 
   <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 
-    // Konfigurasi Firebase
+  <script>
+    // Config Firebase dari project Anda
     const firebaseConfig = {
-      apiKey: "API_KEY_ANDA",
-      authDomain: "PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://PROJECT_ID.firebaseio.com",
-      projectId: "PROJECT_ID",
-      storageBucket: "PROJECT_ID.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
+      apiKey: "AIzaSyAWqNCjALX97psJZRLi14y4uRrjeK6Fp",
+      authDomain: "majestyaffiliate-3f67e.firebaseapp.com",
+      databaseURL: "https://majestyaffiliate-3f67e-default-rtdb.firebaseio.com",
+      projectId: "majestyaffiliate-3f67e",
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
 
-    // Ambil referral user yang sedang login
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const dbRef = ref(db);
-        get(child(dbRef, "members")).then((snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            const tbody = document.querySelector("#referralTable tbody");
-            tbody.innerHTML = "";
+    // Script login
+    const auth = firebase.auth();
+    const loginForm = document.getElementById("loginForm");
 
-            Object.keys(data).forEach((uid) => {
-              const member = data[uid];
-              if (member.referrer === user.uid) {
-                const row = `<tr>
-                  <td>${member.username || "-"}</td>
-                  <td>${member.nama || "-"}</td>
-                  <td>${member.nohp || "-"}</td>
-                  <td>${member.jenisRekening || "-"}</td>
-                  <td>${member.namabank || "-"}</td>
-                </tr>`;
-                tbody.innerHTML += row;
-              }
-            });
-          }
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("Login berhasil!");
+          window.location.href = "member.html"; // arahkan ke halaman member
+        })
+        .catch((error) => {
+          alert("Login gagal: " + error.message);
         });
-      } else {
-        alert("Silakan login terlebih dahulu!");
-        window.location.href = "index.html";
-      }
     });
   </script>
 </body>
