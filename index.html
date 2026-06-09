@@ -1,124 +1,59 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAJESTY Affiliate Program</title>
-
-    <!-- 1. MEMANGGIL SKRIP RESMI FIREBASE CORE & DATABASE (VERSI 8 COMPAT) -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-
-    <style>
-        /* Tampilan halaman web agar rapi */
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f4f4f4; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-        }
-        .container { 
-            max-width: 500px; 
-            width: 100%;
-            background: white; 
-            padding: 30px; 
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
-            border-radius: 8px;
-            text-align: center;
-        }
-        .input-group { 
-            margin-bottom: 15px; 
-            text-align: left; 
-        }
-        input { 
-            width: 100%; 
-            padding: 10px; 
-            box-sizing: border-box; 
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button { 
-            width: 100%; 
-            padding: 12px; 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 16px;
-        }
-        button:hover { background-color: #0056b3; }
-        .error-msg { color: red; margin-top: 10px; display: none; }
-    </style>
+  <meta charset="UTF-8">
+  <title>MAJESTY Affiliate Program</title>
 </head>
 <body>
+  <h1>Login Anggota</h1>
 
-    <div class="container">
-        <h2>MAJESTY Affiliate Program</h2>
-        <p>Silakan masukkan Username Anda untuk masuk ke sistem</p>
-        
-        <div class="input-group">
-            <label for="username">Username Anda:</label>
-            <input type="text" id="username" placeholder="Contoh: anwarglobalmaster" required>
-        </div>
-        
-        <button onclick="cekStatusAkun()">Masuk / Cek Status Akun</button>
-        <p id="pesanError" class="error-msg"></p>
-    </div>
+  <!-- Form Login -->
+  <input type="email" id="email" placeholder="Email Anda">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Masuk</button>
 
-    <script>
-        // 2. KONFIGURASI FIREBASE KELOLAAN ANDA
-        // Ganti dengan data kredensial dari Konsol Firebase Anda!
-        const firebaseConfig = {
-            apiKey: "ISI_API_KEY_ANDA",
-            authDomain: "ISI_AUTH_DOMAIN_ANDA",
-            databaseURL: "ISI_DATABASE_URL_ANDA",
-            projectId: "ISI_PROJECT_ID_ANDA",
-            storageBucket: "ISI_STORAGE_BUCKET_ANDA",
-            messagingSenderId: "ISI_MESSAGING_SENDER_ID_ANDA",
-            appId: "ISI_APP_ID_ANDA"
-        };
-        
-        // Inisialisasi Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
-        // 3. FUNGSI UNTUK MENGECEK USERNAME
-        function cekStatusAkun() {
-            const usernameInput = document.getElementById("username").value.trim().toLowerCase();
-            const pesanError = document.getElementById("pesanError");
-            
-            if (usernameInput === "") {
-                pesanError.innerText = "Sila isi kolom username terlebih dahulu.";
-                pesanError.style.display = "block";
-                return;
-            }
+  <script>
+    // Konfigurasi Firebase (ambil dari Firebase Console → Project settings → Web app)
+    const firebaseConfig = {
+      apiKey: "API_KEY_ANDA",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://PROJECT_ID.firebaseio.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
 
-            // Asumsi struktur data di Firebase: /users/username_user
-            database.ref('users/' + usernameInput).once('value')
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const dataUser = snapshot.val();
-                        pesanError.style.display = "none";
-                        alert("Selamat Datang " + usernameInput + "! Status akun: " + (dataUser.status || "Aktif"));
-                        
-                        // Opsional: Alihkan ke halaman dashboard jika berhasil
-                        // window.location.href = "dashboard.html";
-                    } else {
-                        pesanError.innerText = "Username tidak terdaftar di sistem MAJESTY.";
-                        pesanError.style.display = "block";
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                    pesanError.innerText = "Terjadi gangguan jaringan. Coba lagi nanti.";
-                    pesanError.style.display = "block";
-                });
-        }
-    </script>
+    const auth = firebase.auth();
+    const db = firebase.database();
 
+    // Fungsi login
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("Login berhasil!");
+          // Simpan status login ke database (opsional)
+          const user = userCredential.user;
+          db.ref("members/" + user.uid).set({
+            email: user.email,
+            lastLogin: new Date().toISOString()
+          });
+          // Redirect ke halaman member
+          window.location.href = "member.html";
+        })
+        .catch((error) => {
+          alert("Login gagal: " + error.message);
+        });
+    }
+  </script>
 </body>
 </html>
