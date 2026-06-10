@@ -26,53 +26,57 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <script>
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAWqNClALXv97psJZRLiIt4yauRrjeK6Fw",
-  authDomain: "majestyaffiliate-3f67e.firebaseapp.com",
-  databaseURL: "https://majestyaffiliate-3f67e-default-rtdb.firebaseio.com",
-  projectId: "majestyaffiliate-3f67e",
-  storageBucket: "majestyaffiliate-3f67e.firebasestorage.app",
-  messagingSenderId: "662428804739",
-  appId: "1:662428804739:web:8b0168f6f73cb739989db6",
-  measurementId: "G-HKD2JZ9LTY"
-};
+<script>
+  // Konfigurasi Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAWqNClALXv97psJZRLiIt4yauRrjeK6Fw",
+    authDomain: "majestyaffiliate-3f67e.firebaseapp.com",
+    databaseURL: "https://majestyaffiliate-3f67e-default-rtdb.firebaseio.com",
+    projectId: "majestyaffiliate-3f67e",
+    storageBucket: "majestyaffiliate-3f67e.firebasestorage.app",
+    messagingSenderId: "662428804739",
+    appId: "1:662428804739:web:8b0168f6f73cb739989db6",
+    measurementId: "G-HKD2JZ9LTY"
+  };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-    // Baca data members
-    db.ref('members').on('value', snapshot => {
-      const memberTable = document.getElementById('memberTable');
-      memberTable.innerHTML = `
-        <tr>
-          <th>Nama</th>
-          <th>Username</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
+  // Render tabel member
+  function renderTable(snapshot) {
+    const memberTable = document.getElementById('memberTable');
+    memberTable.innerHTML = `
+      <tr>
+        <th>Nama</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    `;
+    snapshot.forEach(child => {
+      const member = child.val();
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${member.nama || "-"}</td>
+        <td>${member.username || "-"}</td>
+        <td>${member.active ? "Aktif ✅" : "Pending ⏳"}</td>
+        <td>
+          <button onclick="verifikasi('${child.key}')">Verifikasi</button>
+        </td>
       `;
-      snapshot.forEach(child => {
-        const member = child.val();
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${member.nama}</td>
-          <td>${member.username}</td>
-          <td>${member.active ? "Aktif" : "Pending"}</td>
-          <td>
-            <button onclick="verifikasi('${child.key}')">Verifikasi</button>
-          </td>
-        `;
-        memberTable.appendChild(row);
-      });
+      memberTable.appendChild(row);
     });
+  }
 
-    // Fungsi verifikasi
-    function verifikasi(key) {
-      db.ref('members/' + key + '/active').set(true);
-      alert("Member sudah diverifikasi!");
-    }
-  </script>
+  // Baca data members realtime
+  db.ref('members').on('value', renderTable);
+
+  // Fungsi verifikasi
+  function verifikasi(key) {
+    db.ref('members/' + key + '/active').set(true)
+      .then(() => alert("Member sudah diverifikasi!"))
+      .catch(err => alert("Error: " + err));
+  }
+</script>
 </body>
 </html>
